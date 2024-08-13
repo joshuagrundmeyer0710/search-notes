@@ -1,0 +1,60 @@
+Q: What is an n-gram?
+A: an n-gram is a contiguous sequence of n items from a given sample of text or speech
+
+Q: What is the difference between torch.nn and torch.nn.functional?
+A: torch.nn defines nn.Module classes, the latter uses a functional (stateless) approach.
+A: nn.Modules are defined as Python classes and have attributes, e.g. a nn.Conv2d module 
+A: will have some internal attributes like self.weight. F.conv2d however just defines the operation 
+A: and needs all arguments to be passed (including the weights and bias). 
+A: Internally the modules will usually call their functional counterpart in the forward method somewhere.
+
+Q: How to import nn and functional
+A: import torch.nn as nn
+A: import torch.functional as F
+
+Q: How to maintain model
+A: There are 2 strategies. 
+A: 1. We monitor model to detect drift, we retrain
+A: 2. More proactive model - we retrain:
+A: a. Based on time (retrain daily or weekly)
+A: b. Based on data (whenever you collect more data)
+A: c. Based on events (whenever your world changes)
+
+Q: What is the dot product?
+A: Algebraic operation that takes two equal-length sequences of numbers 
+A: and returns a single number by multiplying corresponding entries 
+A: and summing them
+A: v5 = torch.tensor([1,3,-5])
+A: v6 = torch.tensor([4,-2,-1])
+A: torch.dot(v5, v6)
+A: >>>	3
+A: in case of 2D matrices we use torch.mm
+A: #columns must be equal to # of rows
+A: A(m x n) * B(n x p)
+A: and then we calculate dot product between rows and columns
+
+Q: Difference between PCA and Undercompletr Autoencoder
+A: PCA can only build linear relationships. 
+A: As a result, it is put at a disadvantage compared with 
+A: methods like undercomplete autoencoders 
+A: that can learn non-linear relationships and, therefore, 
+A: perform better in dimensionality reduction.
+A: if we remove all non-linear activations from an undercomplete autoencoder 
+A: and use only linear layers, we reduce the undercomplete autoencoder 
+A: into something that works at an equal footing with PCA.
+
+Q: Difference between nn.NNNLoss and CrossEntropyLoss in PyTorch (also binaries)
+A: binary_cross_entropy takes logistic sigmoid values as inputs
+A: binary_cross_entropy_with_logits takes logits as inputs
+A: cross_entropy takes logits as inputs (performs log_softmax internally)
+A: nll_loss is like cross_entropy but takes log-probabilities (log-softmax) values as inputs
+
+Q: Autoencoders Usage
+A: Dimensionality Reduction. The Encoder encodes the input into the hidden layer 
+A: to reduce the dimensionality of linear and nonlinear data; hence it is more powerful than PCA.
+A: Recommendation Engines
+A: Anomaly Detection: Autoencoders tries to minimize the reconstruction error 
+A: as part of its training. Anomalies are detected by checking the magnitude of the reconstruction loss.
+A: Denoising Images: An image that is corrupted can be restored to its original version.
+A: Image recognition: Stacked autoencoder are used for image recognition by learning the different features of an image.
+A: Image generation: Variational Autoencoder(VAE), a type of autoencoders, is used to generate images.

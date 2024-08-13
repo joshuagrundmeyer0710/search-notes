@@ -1,0 +1,82 @@
+How to access arguments enter on CLI level, like:
+$ python my_script.py "Hello" "World"
+Using sys module or more advanced argparse module
+-----------------
+import sys
+and access arguments through sys.argv[] array
+[0] is a script name, [1] is a first argument, [2] a second one, etc.
+-----------------
+import argparse
+parser = argparser.ArgumentParser(description="Say a name")
+parser.add_argument('name')
+args = parser.parse_args()
+name = args.name
+####
+
+What module allows us to interface with software 
+that we'd normally execute from a terminal window?
+We may use subprocess module
+####
+
+How to generate random string of letter and digits and of length N?
+''.join(random.choices(string.ascii_letters + string.digits, k=N))
+####
+
+How to open a file and read it line by line?
+file = open('Iliad.txt', 'r')
+lines = file.readlines()
+for index, line in enumerate(lines):
+    print("Line {}: {}".format(index, line.strip()))
+file.close()
+####
+
+How to delete file?
+from os import remove
+try:
+    remove(file_name)
+except OSError:
+    raise Exception('Unable to remove this file')
+####
+
+How to write binary and haxadecimal numbers?
+num = 11
+num = 0x1011 # also 11 decimal
+num = 0xb    3 also 11 decimal
+print(num) -> 11
+print(hex(num)) -> 0xb
+print(bin(num)) -> 0x1011
+####
+
+How to write binary data to a file?
+The key here is to use "wb" open function parameter
+b = b"0x410x420x43"
+f = open("sample.txt", "wb")
+f. write(b)
+####
+
+How to display image?
+from PIL import Image
+image = Image.open(file_name)
+image.show()
+####
+
+How to specify parameters in url and how to access them using requests module? 
+A query parameter is specified at the end of the url, following a question mark: 
+?name=value&name2=value2
+We can access these variables using: request.args.get(param_name)
+####
+
+Difference between normal and binomial distributions?
+Binomial distribution is discrete and normal distribution is continuous.
+In other words, there are a finite amount of events in a binomial distribution, 
+but an infinite number in a normal distribution.
+####
+
+Difference: GET vs POST vs PUT
+GET is used to request data from a specified resource.
+Query string is sent in the URL of a GET request.
+POST/PUT are used to send data to a server to create/update a resource.
+The data sent to the server is stored in the request body of the HTTP request
+The difference between POST and PUT is that PUT requests are idempotent. 
+That is, calling the same PUT request multiple times will always produce the same result. 
+Calling a POST request repeatedly have side effects of creating the same resource multiple times.

@@ -1,0 +1,41 @@
+How to initialize tensor in PyTorch(4 methods)
+From data variable: torch.tensor(data)
+From numpy array:  torch.from_numpy(np_array)
+From another tensor: torch.ones_like(x_data); torch.rand_like(x_data, dtype=torch.float)
+Random, zeros and ones:torch.rand(shape); torch.ones(shape); torch.zeros(shape)
+####
+
+What are PyTorch operations with _, like tensor.add_(5)
+In-place operations -> result stored in operand
+ Discouraged as problematic with derivatives
+####
+
+PyTorch: can tensors and numpy arrays share memory
+Yes, if on CPU. Change in tensor reflects in numpy array
+####
+
+PyTorch. DataSet vs DataLoader classes - what do we use them for?
+A DataSet is designed for retrieval of individual data items 
+while a DataLoader is designed to work with batches of data.
+####
+
+PyTorch. How to create class for neural network?
+By subclassing nn.Module, and initialize the neural network layers in __init__. 
+Every subclass implements the operations on input data in the forward method.
+class NeuralNetwork(nn.Module):
+    def __init__(self):
+    (...)
+    def forward(self, x):
+    (..)
+####
+
+PyTorch. What are logits?
+Raw values in [-infty, infty] that are returned by the last linear layer of the neural network
+and then passed to the nn.Softmax module
+####
+
+Explain process of training a neural network
+Training a model is an iterative process; in each iteration (called an epoch) the model 
+makes a guess about the output, calculates the error in its guess (loss),
+collects the  derivatives of the error with respect to its parameters, 
+and optimizes these parameters using gradient descent.

@@ -1,0 +1,138 @@
+Q: What is momentum in SGD?
+Q: optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+A: Momentum is a variation on stochastic gradient descent that takes 
+A: previous updates into account as well and helps accelerate gradients 
+A: vectors in the right directions, thus leading to faster converging
+A: We can think of momentum in terms of a ball rolling downhill
+A: that will accelerate and continue to go in the same direction 
+A: even in the presence of small hills.
+
+Q: What is Cross Entropy Loss 
+A: Loss function we use in classification problem. It might be binary or multi-class.
+A: Binary is just a special case for multi-class
+A: for binary -1/m *  Sum_for_all_datapoints(y*log(y_hat) + (1-y)*log(1-y_hat)) 
+A: for binary one of those element will be 0
+A: Multiclass: - 1/m * Sum_for_all_classe(Sum_for_all_datapoints(y*log(y_hat))
+A: The construcyion of this function picks out the correct entries in a matrix 
+A: also sometimes referred to as masking. The mask is constructed based on the true labels.
+
+Q: How cast a tensor to another type?
+A: y = torch.randint(0, 2,(3,))
+A: y = y.type(torch.float32)
+
+Q: How to create 0-dimentional tensor?
+A: t = torch.tensor(7.77)
+A: t 
+A: >>> tensor(7.77)
+A: t2.dim()
+A: >>> 0
+A: https://pytorch.org/blog/pytorch-0_4_0-migration-guide/#creating-tensors
+
+Q: Difference between
+Q: torch.tensor([[1],[2]])
+Q: torch.tensor([[1,2]])
+A: The 1st one has 2 rows and 1 column
+A: The 2nd one has 1 row and 2 columns
+
+Q: How to expend the dimention of a tensor?
+A: torch.unsqueeze(dim)
+A: x = torch.rand(10,10)
+A: x.shape() -> torch.size(10,10)
+A: y = x.unsqueeze(1)
+A: y.shape() -> torch.size(10, 1, 10)
+A: The other way is to use [None] indexing
+A: x[:, : , None].shape
+A: >>> torch.Size([10, 10, 1])
+
+Q: How to remove exis from a tensor?
+A: we may use squeeze(dim)
+A: Note the dimention we want to remove need to have only one item in that dimention
+A: x = torch.rand(10, 1, 10)
+A: x.squeeze(1).size()
+A: >>> torch.Size([10, 10])
+
+Q: Swaping dimentions: reshape vs permute (info)
+A: Never reshape using tensor.view on a tensor to swap dimentions.
+A: even though Torch will not throw an error, this is wrong and will
+A: create unforseen results during training. If you need to 
+A: swap dimentions, always use permute
+
+Q: How to see a list of all methods available for a class?
+A: dir(torch.Tensor)
+
+Q: How to see an official help for a method in PyTorch?
+A: help(torch.Tensor.<method name>)
+
+Q: Why GPUs are more efficient than CPUs
+A: Loss calculation based on update of one weight does not impact 
+A: the loss calculation of the update on anoother weights in the same iteration.
+A: This process can be done in parallel and a GPU has 1000s of cores where CPU 
+A: is basically <= 64 cores and most of operations need to be done sequentially.
+
+Q: %timeit y = torch.matmul(x, y) - what is this (info)
+A: IPython has a set of predefined ‘magic functions’ that you can call with a command line style syntax
+A: The output of this one would be like:
+A: >>> 100 loops, best of 5: 12.6 ms per loop
+A: More magic lines: %lsmagic
+A: Docs: https://ipython.org/ipython-doc/dev/interactive/magics.html
+
+Q: How to print model summary
+A: Using summary function from torchsummary
+A: ----
+A: from torchsummary import summary
+A: summary(model, torch.zeros(1, input_dim)
+
+Q: How to save & load model in Pytorch?
+A: torch.save(model.to('cpu').state_dict(), 'filename.pth')
+A: This will save model in Python serialized format
+A: A good practise is to send model to cpu before save
+A: so that even if currently on gpu it will load without 
+A: problems on any machine, even without cuda
+A: 
+A: To load: 
+A: create model as normal
+A: state_dict = torch.load('mymodel.pht'
+A: model.load_state_dict(state_dict)
+
+Q: How to read / show image in cv2
+Q: resize, crop it, change it to grey scale
+A: import cv2 and cv2_imshow from google patches
+A: cv2.imread
+A: cv2.imshow or cv2_imshow
+A: cv2.resize
+A: cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+A: img_cropped = img[0:200, 0:200]
+A: See Manipulating images CV2 notebook on Colab
+A: /content/drive/MyDrive/Photo - original/IMG_0622.JPG
+
+Q: What are other techniques of image analysis (not related to ANN)?
+A: Histogram to understand a level of brightmess in a picture
+A: Edges detection using different filters
+A: Color separation
+A: Image gradients - change in values
+A: ANNs acts as both features extraxtors and classifiers
+
+Q: What is nesterov momentum in SGD?
+A: Variation on SGD. A problem with classical momentum is that acceleration 
+A: can sometimes cause the search to overshoot the minima at the bottom of a basin.
+A: Nesterov Momentum can be thought of as a modification to momentum to overcome 
+A: this problem of overshooting the minima.
+A: The intuition is that the standard momentum method first computes the gradient 
+A: at the current location and then takes a big jump in the direction 
+A: of the updated accumulated gradient. 
+A: In contrast Nesterov momentum first makes a big jump in the direction 
+A: of the previous accumulated gradient and then measures the gradient 
+A: where it ends up and makes a correction. The idea being that it is better 
+A: to correct a mistake after you have made it.
+
+Q: How to perform LR reduction when the validation loss does not
+Q: decrease in previous "x" epochs?
+A: from torch import optim.lr_scheduler.ReduceLROnPlateau
+A: scheduler = ReduceLROnPlateau(<some parameters>)
+
+Q: What is one-hot encoding?
+A: Frequently used method to deal with categorical data. 
+A: Because many ML models need their input variables to be numeric, 
+A: categorical variables need to be transformed in the pre-processing part.
+A: For each unique value in the categorical column, a new column is created. 
+A: These dummy variables are then filled up with zeros and ones.

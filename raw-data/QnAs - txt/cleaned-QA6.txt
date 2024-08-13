@@ -1,0 +1,206 @@
+What does it mean Python is dynamically-typed?
+Variables are declared with no explicit type
+####
+
+x = True, y = False, z = True
+id(x) == id(z)???
+Yes, Python keep only 2 objects: one for True and one for Falses
+Those objects are singletons
+####
+
+x = False
+x == 0?
+True
+####
+
+s = 'Udacity'
+s[-2] = ?
+s[0:2] == ?
+s[4:7] == ?
+s[4:] == ?
+s[1:5:2] == ?
+s[4::-2] == ?
+s[-2] = t
+s[0:2] == 'Ud'
+s[4:7] == 'ity'
+s[4:] == 'ity'
+s[1:5:2] == 'dc'
+s[4::-2] == 'iaU'
+####
+
+s = 'Udacity'
+s[::-1] == ?
+s[::-1] == 'yticadU'
+It says: start where you're supposed to, end where you're supposed to,
+and takes steps of -1 through this sequence - which functionally reverses a sequence.
+####
+
+s = "ham cheese bacon eggs"
+ingredients = s.split()
+ingredients[-1] = 'scallions' -> ?
+ingredients[1] = 'cheddar' -> ?
+ingredients[1:-1] = ['spinach'] -> ?
+ingredients = ingredients[::2] -> ?
+Replace 'eggs' with 'scallions'
+Update the 'cheese' to be a specific 'cheddar' cheese
+Replace 'cheese' and 'bacon' with 'spinach'
+Throw out every other ingredient
+####
+
+Are Python's lists homogeneous or heterogeneous?
+Heterogeneous - they may include elements / objects of 
+different types. They can also be nested -> lists of lists
+####
+
+What method do we use to add element to the Python's list?
+list.append(element)
+####
+
+9 most important methods for Python's lists
+append(object)
+extend(iterable)
+insert(index, object)
+remove(value)
+clear - removes all items
+pop - removes and returns last or index element of the list
+sort
+reverse()
+count(value)
+####
+
+What is a tuple?
+A tuple is an immutable sequence of arbitrary data.
+Immutable version of lists
+pet = (1, 'dog')
+fish = (1, 2, "red", "blue")
+empty = ()
+singleton = ("value",)
+Tuples contain references to underlying object
+v = ([1, 2, 3], ['a', 'b', 'c'])
+v[0].append(4)
+####
+
+What are the types of:
+var1 = ('text')
+var2 = ('text',)
+The first one is a str, the second one is a tuple
+####
+
+What is this: 
+5, 6, 7
+x = 'a', 4, 'shot'
+These are tuples as comma separated values are automatically converted into tuples
+####
+
+What would be the result of the following?
+first, *rest = 1,2,3,4,5
+rest
+a list -> [2,3,4,5]
+####
+
+How to swap two variables?
+x = 100
+y = 1
+1. With a temporary variable
+2. By packing and unpacking tuples: x, y = y, x
+3. using xor: x = x ^ y    y = x ^ y     x = x ^ y
+####
+
+How to iterate over list = ['a', 'b', 'c'] with index available
+We use enumerate:
+for i, ch in enumarate(list):
+   print(i, ch)
+####
+
+What are the results of: list("ABC") and tuple("fuck")
+['A', 'B', 'C']
+('f', 'u', 'c', 'k')
+####
+
+How to convert string into list?
+'ham cheese bacon'.split()  => ['ham', 'cheese', 'bacon']
+'03-30-2016'.split(sep='-') => ['03', '30', '2016']
+####
+
+How to create a string from an iterable (of strings)
+', '.join(['Eric', 'John', 'Michael']) => "Eric, John, Michael"
+####
+
+How to check if an element is contained in a larger element?
+Using element in container syntax
+'d' in 'Udacity'  # => True
+12 in [5, 12, 13]  # => True
+(3, 4, 5) in ((3, 4, 5), (5, 12, 13), (6, 8, 10), (7, 24, 25))  # => True
+'daci' in 'Udacity'
+####
+
+What will return max(iterable) and min(iterable)?
+Maximum or minimum value in iterable collection 
+max('Udacity') => 'y'
+The object has to be iterable max(123) will return error
+####
+
+How to create dict and set (empty and with values)?
+d = {}
+s = set()
+d = {1: 'a', 2: 1000, 3: 'Test'}
+s = set([1,2,3,4,1]) or set("Test")
+####
+
+What's the results of: s = set([1,2,3,4,1]) and s = set("Test")
+{1,2,3,4} as set keeps unique values
+{'T', 'e', 's', 't'}
+####
+
+How to iterate over a set
+s = set("Test")
+for i in s:
+   print(i)
+Caution: set is unorder so it may return: t, T, e,s
+####
+
+What type has variable a = ([1,2,3,4], "Test")
+It's a tuple
+####
+
+Describe dict.get(key) function
+Either the value associated with a key, or a default value if it's missing
+We may change this defaoult value.
+####
+
+What are three methods to access dictonaries?
+dict.keys()
+dict.values()
+dict.items()
+for value in d.values():
+   print(value) 
+####
+
+How to loop over dictionary's key:value pairs?
+for key, value in mydict.items():
+   do_something_with(key, value)
+####
+
+How to delete elements of dictionary?
+del d["one"] => raises error if key is missing
+d.pop("one", default) => removes and returns value or default if key is missing
+d.popitem() => removes arbitrary value and returns removed tuple
+####
+
+Adding and removing elements from a set
+a = set("mississippi")  # {'i', 'm', 'p', 's'}
+a.add('r')
+a.remove('m')  # Raises a KeyError if 'm' is not present.
+a.discard('x')  # Same as `remove`, except won't raise an error.
+a.pop()  # => 's' (or 'i' or 'p')
+a.clear()
+####
+
+What are mathematical operations on set?
+a = set("abracadabra") # {'a', 'b', 'c', 'd', 'r'}
+b = set("alacazam")    # {'a', 'm', 'c', 'l', 'z'}
+Difference             a - b # => {'b', 'd', 'r'}
+Union                  a | b  # => {'a', 'b', 'c', 'd', 'l', 'm', 'r', 'z'}
+Intersection           a & b # => {'a', 'c'}
+Symmetric Difference   a ^ b  # => {'b', 'd', 'l', 'm', 'r', 'z'}
+Subset                 a <= b  # => False

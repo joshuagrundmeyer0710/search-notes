@@ -1,0 +1,42 @@
+Q: Difference between torch.Tensor, torch.FloatTensor, torch.tensor and torch.empty?
+A: torch.Tensor and torch.FloatTensor are depricated
+A: torch.tensor taking data
+A: torch.empty taking size
+
+Q: Difference between str() and repr()
+A: str() is used for creating output for end user 
+A: while repr() is mainly used for debugging and development.
+A: ----
+A: repr() compute the “official” string representation of an object 
+A: str() is used to compute the “informal” string representation 
+A: ----
+A: The print statement and str() built-in function uses __str__ to display 
+A: the string representation of the object while the repr() built-in function 
+A: uses __repr__ to display the object.
+
+Q: Which environment variable for Python tells the Python interpreter 
+Q: where to locate the module files imported into a program?
+A: PYTHONPATH
+
+Q: What function reverses objects of list?
+A: list.reverse()
+
+Q: What will be the output of the following code?
+Q: ~~~~~19
+A: bitwise negation
+A: -20
+A: ~number is equivalent to –(x+1).
+
+Q: What is the output of the following code?
+Q: import math
+Q: def main():
+Q:   math.cos(math.pi)
+Q: print(main())
+A: None is printed because function does not return the value.
+
+Q: How to sleep the python code for the desired time?
+A: import time
+A: time.sleep(5)  # 5s
+
+Q: What is the output of L[-2] if L = [1,2,3]?
+A: 2

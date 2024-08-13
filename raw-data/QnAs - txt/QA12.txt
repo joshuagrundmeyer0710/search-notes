@@ -1,0 +1,61 @@
+Q: If matrix A is 2 x 3 and matrix B 3 x 2
+Q: the what would be the size of A * B?
+A: 2 x 3 * 3 x 2 - we crossing out internal dimention
+A: and we left with 2 x 2
+
+Q: Multiple matrix A = [[3, 2, 1], [2, 1, 3]]
+Q: by matrix B = [[1, 4], [2, 5], [3, 6]]
+Q: By hand and with torch
+A: [[11, 29], [13, 31]]
+
+Q: How to calculate gradients of a function y = x**2 + z**3
+Q: at x = 1.0 and z = 2.0
+A: x = torch.tensor(1.0, requires_grad=True)
+A: z = torch.tensor(2.0, requires_grad=True)
+A: y = x**2 + z**3
+A: y.backward()
+A: x.grad
+A: z.grad
+
+Q: How to generate random float tensor in a range
+A: max = 8
+A: min = 4
+A: x = (max-min)*torch.rand(10) + min
+
+Q: How torch.sort() method works?
+A: This method returns two tensors. The first tensor is a tensor with sorted values of the 
+A: elements and the second tensor is a tensor of indices of elements in the original tensor.
+A: x = torch.rand(10)
+A: x = x.sort()
+A: x = x[0]
+
+Q: How to get floats from range -10 to 10 (2 ways)
+A: Using torch.Tensor(1).uniform_(-10, 10)
+A: It draws numbers sampled from the continuous uniform distribution 
+A: so each number with the same probability
+A: The other way is to use torch.distributions package
+A: torch.distributions.uniform.Uniform(-100,100).sample([2,2]) 
+A: >>> tensor([[36.8804, -7.5522],
+A:             [-5.8788,  7.6381]])
+
+Q: How to assure we always get the same sequence of random data
+A: By manually setting a seed
+A: 1 - torch.manual_seed(1) # value irrelevant, but it has to be the same all the time
+A: 2 - torch.rand(10)
+A: Repeating the sequence of 1 and 2 always gives the same random dataset
+
+Q: How to combine two tensors in torch
+A: Using torch.cat((tensor1, tensor2), dimen)
+A: t1 = torch.rand(2, 2)
+A: t2 = torch.rand(2, 3)
+A: torch.cat((t1,t2), 0) -> error - attemps to connect 2 rows (2 cols) with 2 rows (3 cols)
+A: torch.cat((t1,t2), 1) -> creates 2 rows (5 columns)
+
+Q: Difference between:
+Q: v1 = torch.Tensor([3,4,5])
+Q: v2 = torch.tensor([3,4,5])
+A: v1 would be float32
+A: v2 would be int64
+
+Q: What is an epoch in ML?
+A: An epoch is whenever we perform a single pass through the entire training set
