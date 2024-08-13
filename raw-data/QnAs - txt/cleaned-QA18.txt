@@ -1,0 +1,298 @@
+Explain Batch Normalization
+When inputs are large (like 0-255 in images) the output of Sigmoid
+doesn't change a lot when weights values change significantly
+On the other hand if input is very small then even large changes 
+in weights do not make significant changes in sigmoid as a very small 
+value * by relatively large weight is still small
+This suggests we shouldn't have neither very small nor very big inputs
+BN substructs data point from batch mean and divide by batch variance
+plus some hyper parameters for the network to learn the best extent of BN
+####
+
+What are most common ANN mistakes?
+1) Not understanding business requirements
+2) Not taking enough time looking at the dataset
+3) Being affraid of overfitting sometimes even didn't try to overfit a single batch first
+- if it ain't going to fit a single example, it sure ain't going to fit a few
+4) Pytorch: not switching between train/eval mode 
+5) Pytorch: forgetting to .zero_grad() before .backward(). 
+6) Passing softmaxed outputs to a loss that expects logits
+7) Pytorch: using view() instead of permute()
+8) not using bias=False for your Linear/Conv2d layer when using BatchNorm, 
+or conversely forgeting to include it for the output layer.
+####
+
+How to approach a new problem in ANN? (Loooooong)
+1. Understand business requirements
+2. Analyze the data longer than you expected
+3. Start with a very simple model that you understand and can easyli twick
+this will also alow you to build some kind of a baseline for more evaluate models
+- set random seed to get consistent results
+4. Put enough effort to initialize correctly
+5. Try to train with all inputs set to 0 - this should work worse than when run with real data
+6. Overfit one batch with few (like 2-3) datapoints to seek if we can reach zero loss
+7. With a simple model you should still underfitting - check if increasing complexity
+goes along with smaller loss
+8. Visualize x just before y_hat = model(x) to be sure we put sth valuable into network
+9. Use pretrained network if you can
+10. Overfit model first 
+- pick the best proven architecture. Like ResNet-50 for image classification
+- use Adam optimizer with 0.0001 - 0.0005
+- turn LR decay at first and then tune it at the very end
+11. Regularize: 
+- just get more data, 
+- data augmentation, sometimes more aggressive than you'd like to take
+- creative augmentation (totaly fake data)
+- smaller input dimentionality (remove spurious signal, smaller images)
+- smaller model size
+- smaller batch size somewhat correspond to stronger regularization
+- use dropout (but carefully with batch norm)
+- increase weight decay penalty
+- early stopping
+- try larger model with early stopping as large model will overfit more 
+but if combined with early stopping may give better results 
+12. Visualize first-layer and ensure you get nice edges that make sense. 
+If your first layer looks like noice something can be off
+13. Tune *random / grid search, hyperparameters optimization)
+Based mostly on: https://karpathy.github.io/2019/04/25/recipe/
+####
+
+Tips for avoiding dead ReLU
+unlucky / wrong initialization or too high LR may put a ReLU in a dead state
+initialize with slightly positive bias e.g. 0.01 (normaly biases are initialized with 0) - controversial
+do not take too much learning rate
+####
+
+What is ensemble in machine learning?
+Ensemble learning is a general meta approach to machine learning 
+that seeks better predictive performance by combining 
+the predictions from multiple models
+use leaky ReLU f(x) = max(0.01*x, x)
+use PReLU - Parametric Rectifier f(x) = max(alfa*x, x) i alfa can be backprop and learnt
+####
+
+How to implement L1 / L2 in pytorch?
+model.train()
+y_hat = model(x)
+l1 = 0
+for param in model.parameters():
+  l1 += torch.norm(param, 1) # provides the absolute value (note: depricated)
+loss = criterion(y_hat, y) + 0.0001*l1 # adding penalty termin times some weightage
+loss. backward()
+optimizer.step()
+optimizer.zero_grad()
+------
+For L2 we:
+  l2 += totch.norm(param, 2)
+loss = criterion(y_hat, y) + 0.01*l1 # weightage smalle as l2 squares weight
+# hich makes them even smaller, so no need for a small weightage
+####
+
+3 main advantages of CNNs
+1. Translation invariance
+2. Reducing computation as flattened image is much smaller than flattened input image
+3. Filters help identify different features: feature extraxtor and classificator
+####
+
+PyTorch: what is the expected order of inputs for image processing?
+Batch x Channel x Height x Width
+####
+
+What is the purpose of TensorDataset class?
+To create a dataset that contains tensors for input features and labels
+dataset = TensorDataset(input_features, labels)
+input_features and labels must match on the length of the first dimension.
+####
+
+What libraries may be used for data augmentation?
+1. torchvision.transforms 
+2. imgaug [aj-em-gejdż]
+####
+
+What is Gaussian Blur
+Gaussian Blur is an augmentation technique that mimics a scenario
+when the image may be potentially blur due to motion
+####
+
+What is Exploading Gradient Problem?
+Error gradients can accumulate during an update as a result of multiplication 
+large gradient by large gradient. This results in very large gradients and an unstable network.
+At an extreme, the values of weights can become NaN values.
+Solutions:
+1. Redesign Network Model
+2. Gradient Clipping
+3. Use weigth regularization
+####
+
+What is "dead ReLU" problem?
+If a ReLU neuron is unfortunately initialized such that it never fires, 
+or if a neuron’s weights ever get knocked off with a large update during training into this regime, 
+then this neuron will remain permanently dead
+####
+
+How can you differently perceive logits?
+As unnormlized log probabilities of the classes
+####
+
+What is the negative log probability loss
+L = -log(softmax(prediction))
+We calculate softmax out of logits - this will get us normalized probabilities
+The we take log and negates this
+The lowest loss for the correct class will be 0 if class is correctly predicted
+The highest score can be infinity
+####
+
+How do you decide over size of batch?
+It's not samothing you should be worried about as about learning_rate for example
+you choose the size that fits well in the memory 
+####
+
+2 most crusicial hyperparameters according to Karpathy
+learning rate
+regularization parameter
+####
+
+What is gradient check?
+When we conmpute gradient for new loss function and we want tu be sure 
+that we did a good job analyticly, we may compute gradient numerically
+df(x)/dx = lim(h->0) [f(x+h) - f(x)]/h
+####
+
+Transfer learning with CNN
+If small dataset: fix all weights (treat CNN as fixed feature extractor)
+Retrain only the classifier
+If medium-sized dataset - finetune: use old weights as initialization
+and train the full network or only some of the higher layers
+####
+
+3 cons of logistic sigmoid function as an activation
+1. Saturated neurons return gradients very close to 0 
+2. Sigmoid outputs are not zero-centered (worse convergence)
+3. exp() is computationally expensive
+####
+
+3 pros of ReLU as an activation function
+1. Does not saturate as sigmoid
+2. Very computationally efficient
+3. In pracitce converges much faster than sigmoid (like 6x)
+####
+
+How to 1) zero-center and 2) normalize data?
+1) by substracting mean X -= np.mean(X, axis=0)
+2) by dividing by standard deviation X /= np.std(X, axis=0)
+####
+
+What kind of preprocessing is common in computer vision?
+1. Substructing the mean image. For example mean image for CIFAR [32,32,3] 
+is [32,32,3] array we substruct from every datapoint
+2. Substructing per-channel mean so 3 number, one for each channel.
+BTW: PCA, Whitening and also deviding by STD is not so common
+####
+
+How NOT to do weigth initialization?
+Weight initialization is very important as many reaserach failed
+because people do not pay a lot of attention to it.
+1. Do not set them all to 0
+2. Small random numbers W = 0.01 * random will not work for larger ANNs
+All activations will go to zero -> vanishing gradient 
+3. All weights to 1.0 - almost all neurons completely saturated
+####
+
+How to do reasonable weigth initialization?
+Xavier initialization (tanh): W = randn(#inputs, #outputs) / np.sqrt(#inputs)
+But it doesn't work for ReLU. For Relu we need np.sqrt(#inputs / 2)
+Batch normalization solves a lot of problems
+####
+
+Pros of Batch normalization
+1. Improves gradient flow through the network
+2. Allow higher LR
+3. Reduces strong dependence on initialization
+4. Acts as a form of regularization 
+What about BN and Dropout?
+####
+
+What's the most frequent reason for NaN while training?
+If we did all sanity checks (like overfitting small sample, initialize well)
+then it almost always means high learning rate
+####
+
+If you optimize hyperparameters is it better to grid-search or random-search
+always go for random search as grid search do not discern between some
+important and some unimportant hyperparameters.
+####
+
+AdaGrad - how does it work?
+Adds element-wise scaling of the gradient
+based on the historical sum of squares in each dimension
+Scaled gradient is smaller if original one is big
+and it's larger if original gradient is small
+so we avoid a lot of zig-zaging
+The side effect is the learning rate is decaying over long time 
+The answer would be RMSProp
+####
+
+What is RMSProp and how it relates to Adagrad?
+RMSProp adds a decay rate to a scaler that scales learning rate in Adagrad
+So this leaky scaler prevents learning rate to go to zero in a long run
+####
+
+How to describe Adam optimizer?
+It's like a combination of momentum and RMSProp
+####
+
+What are model ensembles?
+We train multiple independent models
+At test time we average their results
+and get usually some small percentage of improvements (like 2%)
+####
+
+What kind of ML task is localization?
+We may perceive localization as regression problem
+The output would be 4 numbers: x,y,w,h
+And the ground truth is also 4 numbers (box coordinates)
+We can actually localize K objects - we just need a ground truth to be X x 4 numbers
+The same case is for pose estimation - it's also a regression problem.
+####
+
+Can we visualize filter / kernels of CNN and what for?
+Yes we can wizualize all filter but only the first layer 
+is interpretable as it has the direct connection with the raw image
+####
+
+CNN & Residual Net vs RNN and LSTM
+CNN and RNN are trasforming from one state to the other
+ResNets and LSTM are adding addtion of previous state and LSTM also forgeting
+####
+
+How can we control a exploding / vanishing gradient problem in RNNs?
+We can control vanishing gradient with LSTM 
+We can control exploading gradient with gradient clipping 
+####
+
+Transfer learning - how to set Learning Rate?
+For fune-tuning top layers use 1/10 of the original LR
+For fune-tuning intermediate layers use 1/100 of the original LR
+####
+
+Transfer learning: how to fine tune last layers vs medium layers
+As last layers are initialized randomly they may produce large gradients that would destroy 
+any other layers. So we first freeze all but last layers, train them, and the scale-out to 
+to traing last with medium layers
+####
+
+We have input H x W x C and we use Conv with C filters,
+stride 1 and padding to preserve depth. 
+How many parameters do we have to 7x7 conv, how many 
+for 3 layers of 3 x 3 and which one is better
+C filters x (7 x 7 x depth of C) = 49*C*C
+3 x C x (3 x 3 x C) = 27*C*C
+3 smaller convolutional layers would be better as they have less parameters to train
+but at the same time more nonlinearity (because 3 layers)
+####
+
+What is Segmentation?
+It is one of CV tasks. We may discern Semantic and Instance Segmentation
+In Semantic we do not care about instances of objects (if many on the screen)
+In instance we detect instances and give categories - it's called SDS
+simultaneous detection and segmentation

@@ -1,0 +1,119 @@
+Q: What is Dependant variable? (3 definitions)
+A: It's just a value on Y axis
+A: In other words: outcome, response variable
+
+Q: What is Independent variable? (3 definitions)
+A: It's just a value on X axis
+A: In other words: predictor, explanatory variable
+
+Q: Statistics: what is a construct?
+A: The construct is a proposed attribute of a person or phenomenon that often 
+A: cannot be measured directly: health, memory, love
+
+Q: Statistics: what is a lurking variable?
+A: A lurking variable (przyczajona zmienna) is a variable that has an important effect 
+A: and yet is not included among the predictor variables under consideration
+A: E.g. smoking as a lurking variable in the research on influence of diet and exercising 
+A: on health
+
+Q: What is a statistic?
+A: A number that describes a sample
+
+Q: Difference between bar chart and histogram
+A: With bar charts, each column represents a group defined by a categorical variable
+A: With histograms, each column represents a group defined by a continuous, quantitative variable.
+ 
+Q: Positively vs negatively skewed distribution
+A: Positively - more data near zero 
+A: Negatively - few values near zero, more data away from zero
+
+Q: What is Standard Deviation?
+A: Most common measure of spread. How far away, on average, a single data point is from the mean.
+A: Square root of Variance. Its symbol is greek letter sigma. In a normal distribution approximately:
+A: 68% of data falls into one standard deviation 
+A: 95% of data falls into 2 standard deviations
+
+Q: Statistics: what is mode?
+A: The value at which the frequency is the highest. 
+A: The value most often in the sample.
+A: On a histogram that would be the highest bin.
+ 
+Q: Uniform vs Bimodal distribution
+A: Uniform has no mode. It’s flat. 
+A: Bimodal has two modes.
+
+Q: What is Variance?
+A: Measure of how spread out a data set is.
+A: Formula: the average squared deviation sum(D^2)/n
+A: or SUM((x - mean)^2)/N
+A: N for the population, N-1 for a sample
+
+Q: What is mean/average vs median?
+A: Mean/Avarage - arithmetic mean
+A: Median - the value in the middle of the distribution
+
+Q: What is Outlier?
+A: An observation that lies outside the overall pattern of a distribution
+
+Q: What is the first quartile?
+A: The first quartile is the point where 25% of the distribution is below that point, and 75% of the data is above that point.
+
+Q: What is the Bessel’s Correction?
+A: Calculating variance / SD by dividing by n-1, instead of n
+A: We do this because variability of a sample would be always lower that the variability 
+A: of a population, as sampling usually takes data from around a mean as 68% of data falls 
+A: in one standard deviation. So SD of a small sample would be smaller than SD of a population.
+
+Q: What is Monte Carlo simulation?
+A: Risk analysis method. It builds models of possible results by substituting a range of values
+A: for any factor that has inherent uncertainty. Then it calculates results over and over, 
+A: each time using a different set of random values from the probability functions.
+A: It produces distributions of possible outcome values.
+A: It assumes that random sample tends to have the same properties as a population
+
+Q: Difference between traditional and ML systems?
+A: Traditional system are developed using code
+A: ML system are developed using data
+
+Q: What is z-score?
+A: Calculated (X-mean)/SD
+A: How far from the mean a data point is in standard deviations
+A: Z-score equals to 0 means we at the mean
+
+Q: What is a standard normal distribution?
+A: A normal distribution with a mean of zero and standard deviation of 1.
+A: A normal distribution can be converted to the standard normal distribution
+A: by calculating z-score for every x value 
+
+Q: What is a probability?
+A: Number that reflects the likelihood that a particular event will occur
+
+Q: What is CFD Cumulative Distribution Function?
+A: CDF is the probability that a random variable, say X, will take a value less than or equal to some value y.
+A: If you roll a die, the probability of obtaining 1, 2, 3, 4, 5, or 6 is 16.667% (=1/6). 
+A: The CDF of 2 is the probability that the next roll will take a value less than or equal to 2 and is equal to 33.33%
+
+Q: What if PDF Probability Den
+A: PDF is the probability that a random variable, say X, will take a value exactly equal to some value y.
+A: If you roll a die, the probability of obtaining 1, 2, 3, 4, 5, or 6 is 16.667% (=1/6). 
+A: The PDF or the probability that you will get exactly 2 will be 16.667%.
+
+Q: What is percentile?
+A: percentage of values that fall below a particular value in a set of data scores
+A: Median is the 50th percentile
+A: 80th percentile means 80 percent values were lower than yours and 20 percent of the students' scores were higher than yours.
+
+Q: What is a Binomial Distribution?
+A: A binomial distribution can be thought of as simply the probability of a SUCCESS or FAILURE outcome in an experiment
+A: that is repeated multiple times. The binomial is a type of distribution that has two possible outcomes
+
+Q: What is sampling distribution?
+A: It's a distribution of sample mean
+A: The mean of the sampling distribution will always be the same as the mean of the original non-normal distribution
+
+Q: What is  the central limit theorem (CLT)?
+A: CLT gives us a way to turn a non-normal distribution into a normal distribution. 
+A: It tells us that, even if a population distribution is non-normal, its sampling distribution 
+A: of the sample mean will be normal for a large number of samples (at least 30)
+A: The CLT is useful because it lets us apply what we know about normal distributions, 
+A: like the properties of mean, variance, and standard deviation, to non-normal distributions

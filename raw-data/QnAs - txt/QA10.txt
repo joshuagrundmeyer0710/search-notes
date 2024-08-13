@@ -1,0 +1,77 @@
+Q: Fixed digits after decimal with f-strings
+A: print(f'{(10/3):.5f}')
+A: 3.33333
+
+Q: What is idempotence?
+A: When performing an operation again and again gives the same result
+A: for example, PUT http request is idempotent as calling PUT multiple times
+A: will always produce the same results
+
+Q: What is Bias in machine learning?
+A: Bias occurs when an algorithm has limited flexibility to learn the true signal from the dataset
+A: In other words: bias is an error from faulty assumptions in the learning algorithm UNDERFITTING
+A: A high bias means the prediction will be inaccurate.
+A: A linear regression is an example of an algorithm with high bias. 
+A: It's easy to understand and implement but not flexible to learn the underlying signal of the data. 
+A: Thus, they are inaccurate for complex datasets.
+
+Q: What is Variance in machine learning?
+A: Variance is an error from sensitivity to small fluctuations in the training set. 
+A: High variance can cause an algorithm to model the random noise in the training data, 
+A: rather than the intended outputs - it's called OVERFITTING
+A: A high variance tends to occur when we use complicated models that can overfit our training sets
+
+Q: Explain Bias-Variance tradeoff
+A: Increaing bias reduces variance and vice-versa
+A: Unfortunately, you cannot minimize bias and variance at the same time.
+A: You have to find a sweet spot by minimizing error defined as:
+A: E = B^2 + V + irreducible error
+
+Q: What is overfitting?
+A: Overfitting is a low bias and high variance problem. 
+A: Algorithm is too compicated for the task and too sensitiv to small fluctuations in the training set.
+A: In other words: the algorithm is memorizing instead of learning.
+A: TRY: more training data or decrease model complexity
+
+Q: What is underfitting?
+A: Underfitting is a scenario in data science where a data model is unable to capture 
+A: the relationship between the input and output variables accurately, 
+A: generating a high error rate on both the training set and unseen data
+
+Q: What are 5 methods for preventing overfitting?
+A: 1. Simplifying model
+A: 2. Data augmentation
+A: 3. Early stopping
+A: 4. Dropout
+A: 5. Regularization
+
+Q: Pytorch - how to create 
+Q: a) vector of size N filled with random floats
+Q: b) matrix of size N x M filled with random ints from the range of (10,100)
+Q: c) vector of size N with specific data
+A: a) torch.rand(5) or torch.rand(5,)
+A: b) torch.randint(10, 100, (3,4))
+A: c) torch.tensor([1,2,3,4,5])
+
+Q: PyTorch - how to check type of data in a tensor?
+A: m = torch.rand(5,2)
+A: m.dtype
+A: >>> torch.float32
+
+Q: What is the number of columns and rows in this tensors?
+Q: a) torch.rand(5,2)
+Q: b) torch.rand(3,)
+A: a) matrix 5 rows x 2 columns
+A: b) vector of length = 3. 
+A:    Often presented in vertical (3 rows), but no dimentionality for vector
+
+Q: What is torch equivalent / counterpart of numpy.reshape?
+A: Method torch.view()
+A: v = torch.rand(10,2) # size 10r x 2c
+A: v.view(4, 5) # size 4r x 5c
+A: v.view(4, -1) # to infer size of the second dimention from the first one
+
+Q: Converting between tensor and numpy array and back?
+A: a = np.array([1,2,3,4,5])
+A: t = torch.from_numpy(a)
+A: n = torch.numpy(t)

@@ -1,0 +1,64 @@
+Numpy array: how to get number of dimentions, shape, size, size of the first dimention
+Number of dimensions: ndim
+Shape: shape
+Size (total number of elements): size
+Size of the first dimension: len()
+####
+
+Difference between torch.rand and torch.randn?
+torch.rand returns values from 0 to 1 from uniform distribution
+torch.randn returns values from standard normal distribution (mean=0, sd=1)
+####
+
+Create Linear Regression Model in PyTorch
+from torch.nn.modules.linear import Linear
+class LR(nn.Module):
+  def __init__(self, input_size, output_size):
+    super().__init__()
+    self.linear = Linear(input_size, output_size)    
+  def forward(self, x):
+    return self.linear(x)
+####
+
+Write pseudo code for training a model in PyTorch
+for epoch in range(epochs):
+  for data, label in training_dataset:
+    y_pred = model.forward(x)
+    loss = criterion(y_pred, y)
+   
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+####
+
+What is the sigmoid function?
+A sigmoid function is a mathematical function having a characteristic 
+"S"-shaped curve or sigmoid curve.
+Hiperbolic tangent 
+Logistic function 1 / (1 + e**-x)
+It transforms input to a range from 0 to 1.
+####
+
+Where does the name Logistic Regression come from?
+Logistic regression is like linear regression but with logistic (sigmoid) function at the end
+sigmoid(x) = 1 / (1 + e**-x)
+It transforms input to a range from 0 to 1, thus effectively classifies the input into 
+two cathegories (binary classification)
+####
+
+How to define loss function in Pytorch?
+Using functions in torch.nn module
+criterion = torch.nn.MSELoss()  # Mean Squared Error
+criterion = torch.nn.BCELoss()  # Binary Cross Entropy
+####
+
+How to define optimizer in PyTorch?
+Using optimizers from torch.optim module
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+####
+
+What's the difference in size for those tensors?
+t1 = torch.tensor(58)
+t2 = torch.tensor([57.3895])
+t1 is a scalar with size 0 (Size[])
+t2 is a vector with size 1 (Size[1])

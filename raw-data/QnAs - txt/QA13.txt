@@ -1,0 +1,56 @@
+Q: Numpy array: how to get number of dimentions, shape, size, size of the first dimention
+A: Number of dimensions: ndim
+A: Shape: shape
+A: Size (total number of elements): size
+A: Size of the first dimension: len()
+
+Q: Difference between torch.rand and torch.randn?
+A: torch.rand returns values from 0 to 1 from uniform distribution
+A: torch.randn returns values from standard normal distribution (mean=0, sd=1)
+
+Q: Create Linear Regression Model in PyTorch
+A: from torch.nn.modules.linear import Linear
+A: class LR(nn.Module):
+A:   def __init__(self, input_size, output_size):
+A:     super().__init__()
+A:     self.linear = Linear(input_size, output_size)    
+A:   def forward(self, x):
+A:     return self.linear(x)
+
+Q: Write pseudo code for training a model in PyTorch
+A: for epoch in range(epochs):
+A:   for data, label in training_dataset:
+A:     y_pred = model.forward(x)
+A:     loss = criterion(y_pred, y)
+A:    
+A:     optimizer.zero_grad()
+A:     loss.backward()
+A:     optimizer.step()
+
+Q: What is the sigmoid function?
+A: A sigmoid function is a mathematical function having a characteristic 
+A: "S"-shaped curve or sigmoid curve.
+A: Hiperbolic tangent 
+A: Logistic function 1 / (1 + e**-x)
+A: It transforms input to a range from 0 to 1.
+
+Q: Where does the name Logistic Regression come from?
+A: Logistic regression is like linear regression but with logistic (sigmoid) function at the end
+A: sigmoid(x) = 1 / (1 + e**-x)
+A: It transforms input to a range from 0 to 1, thus effectively classifies the input into 
+A: two cathegories (binary classification)
+
+Q: How to define loss function in Pytorch?
+A: Using functions in torch.nn module
+A: criterion = torch.nn.MSELoss()  # Mean Squared Error
+A: criterion = torch.nn.BCELoss()  # Binary Cross Entropy
+
+Q: How to define optimizer in PyTorch?
+A: Using optimizers from torch.optim module
+A: optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+
+Q: What's the difference in size for those tensors?
+Q: t1 = torch.tensor(58)
+Q: t2 = torch.tensor([57.3895])
+A: t1 is a scalar with size 0 (Size[])
+A: t2 is a vector with size 1 (Size[1])

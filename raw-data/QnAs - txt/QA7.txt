@@ -1,0 +1,127 @@
+Q: Scope for functions, if, loops
+A: Only function definitions define a new symbol table.
+A: if statements, for loops, while loops, and with statements 
+A: do not introduce new symbol tables and a new scope
+
+Q: When we pass an object as an function parameter and this parameter is changed
+Q: within a functions. Does this change affect the outer object?
+A: Python implements pass-by-object-reference – Objects aren't copied, 
+A: but the reference to them is. This means that if a mutable object is passed, 
+A: and the function mutates the object, the caller will see changes.
+
+Q: What are Variadic Arguments? What are their types?
+A: A variadic parameter collects excess arguments that would otherwise go 
+A: unmatched to a parameter, into a data structure.
+A: There 2 types: variadic positional parameters and variadic keyword parameters.
+
+Q: How positional variadic argument works?
+A: These are usually parameters like *args and they capture excess 
+A: positional arguments. Then they are provided in a tuple of the same name
+A: def test(*args):
+A:    print(args)
+A: test(5, 6, 7, 8)
+A: >>> (5, 6, 7, 8)
+
+Q: How to pass an object into variadic positional argument?
+Q: def product(*nums):
+Q:   do_some_thing
+Q: primes = (1, 3, 5, 7)
+Q: product(???)
+A: product(*primes)
+A: This allows for unpacking parameters
+
+Q: How to add single / many values to a dictionary?
+A: d[1] = 'one'
+A: d.update({2: 'two', 3: 'three'})
+
+Q: How to remove value from a dictionary?
+A: d = {1: 'one', (1, 2, 3): ('one', 'two', 'three'), 2: 'two', 3: 'three'}
+A: d.pop((1,2,3))
+A: >>> ('one', 'two', 'three')
+
+Q: Q: How variadic keyword argument works?
+A: A parameter of the form **kwargs in a function signature introduces 
+A: a variadic keyword parameter. This parameter will capture excess 
+A: keyword-supplied arguments into a dictionary named the same thing, 
+A: such as kwargs.
+
+Q: How to pass an object into variadic keyword argument?
+A: def authorize(quote, **speaker_info):
+A:    ...
+A:  
+A: info = {'sonnet': 18, 'line': 1, 'author': "Shakespeare"}
+A: authorize("Shall I compare thee to a summer's day", **info)
+
+Q: How to assign and access to Python's function doc?
+A: We create doc by describing it in function's body
+A: def echo(arg):
+A:     """Return the first argument."""
+A:     return arg
+A: We may access it by either help(functions) or echo.__doc__
+
+Q: What is map function and what it does?
+A: map is a higher order function in the form of:
+A: map(fn, iter)
+A: It produces iterable by applying the function to each element of iterable.
+A: It returns iterable object so we should surround it with tuple() or list()
+
+Q: What is filter function and what it does?
+A: filter is a higher order function in the form of:
+A: filter(predicate_function, iterable)
+A: It filters elements from iterable using predicate_function.
+A: It returns iterable object so we should surround it with tuple() or list()
+A: Note: predicate_function
+A: - is either a lambda expression or name of the function without parameters
+A: - returns True or False
+
+Q: What are lambda functions?
+A: Anonymous, on-the-fly functions that are used for simple callables 
+A: that don't need to clutter the local namespace
+A: lambda params: expr(params)
+A: lambda parameters: return
+A: ex.: (lambda x: x > 3)(4) # => True
+A: map(lambda val: val ** 2, range(10)) # Squares from 0**2 to 9**2
+A: filter(lambda pair: pair[1] > 0, [(4,1), (3, -2), (8,0)]) # Tuples with positive second elements
+A: sorted([(4,1), (3, -2), (8,0)], key=lambda pair: pair[1]) # Sort a collection based on a custom function.
+
+Q: What module gives us standard operators as functions?
+A: operator
+A: from operator import add, gt, is_not, floordiv
+
+Q: 3 ways to add to list of int?
+A: result = []
+A: for x, y in zip(l1, l2):
+A:    result.append(x+y)
+A: 
+A: from operator import add
+A: list(map(add, l1, l2))
+A: 
+A: list(map(lambda x, y: x+y, l1, l2)
+
+Q: What is an iterator?
+A: It's a stream of finite or infinite stream of data.
+A: Iterator delivers one element at a time
+A: next(iter) asks an iterator to yield next value. 
+A: If there are no more values, it raises StopIteration. 
+A: iter(data) function produces an iterator from an iterable data source.
+
+Q: What is all function?
+A: all(iterable, /)
+A: Return True if bool(x) is True for all values x in the iterable.
+A: If the iterable is empty, return True.
+
+Q: What is any function?
+A: any(iterable, /)
+A: Return True if bool(x) is True for any x in the iterable.
+A: If the iterable is empty, return False.
+
+Q: What is zip function?
+A: Returns iterable that produces tuple containing i-th element
+A: from each iterator supllied to zip
+A: next(zip(list1, list2, list3)) => (l1, l2l, l3)
+
+Q: Iterators: what will be the result of this code?
+Q: it = iter(range(100))
+Q: 66 in it
+Q: next(it)
+A: 67

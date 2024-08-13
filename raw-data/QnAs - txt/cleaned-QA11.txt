@@ -1,0 +1,83 @@
+PyTorch: how to calculate sum and dot product of 2 vectors
+[1,2,3] and [3,4,5]
+t_one = torch.tensor([1, 2, 3])
+t_two = torch.tensor([3, 4, 5])
+Sum
+t_one + t_two -> tensor([4, 6, 8])
+dot product
+torch.dot(t_one, t_two) -> 26
+####
+
+How to create float tensor - 3 ways
+float_tensor1 = torch.tensor([4.,5.,6.])
+float_tensor2 = torch.tensor([4,5,6], dtype=torch.float)
+float_tensor3 = torch.FloatTensor([4,5,6])
+print(float_tensor1.dtype, float_tensor2.dtype, float_tensor3.dtype)
+>>>torch.float32 torch.float32 torch.float32
+####
+
+Pytorch: How to generate N equally spaced numbers from 0 to 10?
+torch.linspace(0, 10, 3)
+>>> tensor([ 0.,  5., 10.])
+####
+
+How to create a tensor out of list
+To prevent the original data type:
+torch.tensor([1,2,3,4]) or
+torch.as_tensor([1,2,3,4])
+If you need specific type: torch.FloatTensor or IntTensor 
+####
+
+How to convert a tensor into numpy array?
+the simple case (no GPU involved): t.numpy()
+but usually t.detach().cpu().numpy()
+In in case the tensor is (or can be) on GPU, 
+or in case it requires (or can require) grad.
+####
+
+What would be the result: torch.arange(0, 25, 2)
+tensor([ 0,  2,  4,  6,  8, 10, 12, 14, 16, 18, 20, 22, 24])
+####
+
+How to create 2-d tensor using arrange and view
+torch.arange(0, 8)
+>>> tensor([0, 1, 2, 3, 4, 5, 6, 7])
+one_d.view(4,-1)
+>>> tensor([[0, 1],
+            [2, 3],
+            [4, 5],
+            [6, 7]])
+####
+
+What is regularization and what is L1 regularization?
+Regularization is a technique to prevent overfitting. 
+Overfitting may come from a model being overly complex and overly flexible.
+Overly complex - to many features. Overly flexible - to sensitive to noise.
+L1 is called Lasso and is used to reduce model complexity.
+It introduces penalty term to a loss function: absolute values of the regression coefficients (∣β∣).
+L1 minimizes the regression coefficients to regularize the model parameters. 
+Sometimes, Lasso can reduce regression coefficients to zero, 
+which is particularly important when it comes to feature selection.
+Use Lasso when there is a small dataset with a large number of features.
+####
+
+What is regularization and what is L2 regularization?
+Regularization is a technique to prevent overfitting. 
+Overfitting may come from a model being overly complex and overly flexible.
+Overly complex - to many features. Overly flexible - to sensitive to noise.
+L2 is called Ridge and is used to reduce model flexibility.
+It introduces penalty term to a loss function: squared value of the regression coefficients
+Higher values of the coefficients represent a model with greater flexibility. 
+To minimize the function, these coefficients should be small. 
+L2 regularization ensures the coefficients do not rise too high.
+####
+
+What is a regression?
+Regression is a statistical method that attempts to determine the strength and character 
+of the relationship between one dependent variable (usually denoted by Y) 
+and a series of other variables (known as independent variables).
+Linear, Logistic, Lasso, Ridge - all are regression methods
+####
+
+What is a condition for matrix multiplication?
+A*B only when # columns A = # rows B

@@ -1,0 +1,137 @@
+What Python's module offers OO approached to filesystem paths?
+Give examples
+pathlib
+here = Path('.')  # instance of a Path subclass with current location.
+here = here.resolve()  # Resolve symbolic links into an absolute path.
+parent = here.parent  # Navigate up the chain of parents. 
+child = here / 'subfolder' / 'subfile.txt'  # Navigate to a subfolder or subfile. 
+####
+
+What is a general pattern to open a file in Python?
+with open(filepath, mode) as f:
+    # Use the file-like object `f`
+    ...
+Note: 'with' statement will close file after execution exits the block
+####
+
+if we open a file f with the 'r' mode, what is type of object returned by f.read()?
+It is str
+####
+
+How to process CSV file (2 methods)
+reader = csv.reader(f) or reader = csv.DictReader(f)
+and then for row in reader:
+one row of the reader(f) will give us list
+and row of the DictReader(f) will give us a dictionary with header as a key 
+####
+
+What is @property decorator?
+It turn a method into a property. 
+So it might be seen as a way for creating readonly properties. 
+@property
+def x(self):
+   return self._x
+####
+
+How to load csv file with proper exception handling?
+try:
+   f = open(fname, 'rb')
+except OSError:
+    print "Could not open/read file:", fname
+    sys.exit()
+
+with f:
+   reader = csv.reader(f)
+   for row in reader:
+       pass #do stuff here
+####
+
+How to measure time elapsed?
+from timeit import default_timer as timer
+start = timer()
+# ...
+end = timer()
+print(end - start) # Time in seconds, e.g. 5.38091952400282
+####
+
+What requirements.txt file is used for?
+Commonly used filename for a list of all python library dependencies. 
+Generated in the CLI with:
+pip freeze > requirements.txt
+####
+
+What is a pure function?
+A method where the output is based solely on its inputs and
+no variables outside the function’s scope are affected or changed.
+####
+
+Difference between single underscore at the beginning, double underscore 
+at the beginning and double underscore at the beginning and at the end?
+_single_leading_underscore: weak "internal use" indicator. 
+from M import * does not import objects whose name starts with an underscore.
+------------
+single_trailing_underscore_: used by convention to avoid conflicts 
+with Python keyword, e.g. 
+Tkinter.Toplevel(master, class_='ClassName')
+------------
+__double_leading_underscore: when naming a class attribute, invokes 
+name mangling (inside class FooBar, __boo becomes _FooBar__boo).
+------------
+__double_leading_and_trailing_underscore__: "magic" objects or attributes 
+that live in user-controlled namespaces. 
+E.g. __init__, __import__ or __file__. 
+Never invent such names; only use them as documented.
+####
+
+How do you call those types of imports?
+1) from os import open as open_
+2) import package.module.class
+3) from urllib import request
+1) partial import with aliasing
+2) absolute import / fully qualified import
+3) partial import without aliasing 
+####
+
+How to implement abstract class and method?
+By importing and inheriting the Abstract Base Class (ABC) 
+and @abstractmethod decorator
+from abc import ABC, abstractmethod
+class someInterface(ABC):
+    ....
+    @abstractmethod
+    def func(self):
+        pass
+####
+
+If you extend a class, how can you access the parent method's?
+using the super() method
+class BaseClass():
+    def simple_method():
+        return 'hello'
+
+class SimpleClass(BaseClass):
+    def simple_method():
+        return super().simple_method() + ' world'
+####
+
+What is Duck Typing?
+Duck Typing is a type system used in dynamic languages, 
+where the type or the class of an object 
+is less important than the method it defines. 
+Using Duck Typing, we do not check types at all.
+We applicate the duck test: "If it walks like a duck and it quacks like a duck, then it must be a duck"
+to determine whether an object can be used for a particular purpose
+####
+
+Polymorhpism in Python
+Polymorphism in python defines methods in the child class 
+that have the same name as the methods in the parent class. 
+Implemented in python for different purpose commonly Duck Typing, 
+Operator and Method overloading, and Method overriding
+####
+
+How to print 20! in scientific notation?
+from math import factorial
+var = factorial(20)
+print(f'{var:.4e}')
+>>> 2.4329e+18

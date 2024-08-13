@@ -1,0 +1,91 @@
+Explain Transformer architecture
+There 2 building blocks: encoder and decoder
+Each encoder has 6 identical blocks of encoder. There are the same but do not share weigths
+Each block has self-attention module and feed-forward neural network
+An input to the encoder are embedded words (dim=512) and we provide them all at one 
+by combining them into a one long vector N x 512. 
+N might be e.g. # of words of the longest sentence.
+Each word has its separate path through a model. The relations are built in self-attention
+in FF net words are going independently. 
+####
+
+How does the attention work in the original Transformer?
+1. We start with embeddings in a matrix X, where each row is a single word
+2. We multiply X by 3 matrices Wq (query), Wk (key), Wv (value). Those matrices are learnt. 
+3. This multiplication for each word creates: query, key and value vectors - one for each word
+4. For each word (here 1) we calculate score by multiplying query vecotr by a key vector 
+of each word: q[1] * k[1..n] / square root(key dimentionality)
+5. We softmax scores for each word
+6. We weigth the value vector by multiplying v * softmaxed-score
+7. We sum up weighted value vectors 
+The resulting vector is one we can send along to the feed-forward neural network.
+Addtionally, we have multiple heads of attention.
+It gives the attention layer multiple "representation subspaces".
+As we have 8 instead of 1 matrices after 8-headed self-attention we need to combine them 
+to be able to send them to FFNN. We do that by multiplying by matrix WO.
+####
+
+Generative vs Discriminative models
+Generative models are based on the joint probability, p( x, y), of the inputs x 
+and the label y, and make their predictions by for example using Bayes rules 
+to calculate p(y | x), and then picking the most likely label y.
+Naive bayes is a Generative model whereas Logistic Regression is a Discriminative model.
+####
+
+What is an autoregressive model
+An autoregressive model learns from a serious of timed steps and takes measurements 
+from previous actions as inputs for a regression model, in order to predict 
+the value of the next time step.
+Autoregression modeling centers on measuring the correlation between observations 
+at previous time steps (the lag variables) to predict the value of the next 
+time step (the output).
+If both variables change in the same direction, for example increasing or decreasing 
+together, then there is a positive correlation. If the variables move in opposite 
+directions as values change, for example one increasing while the other decreases, 
+then this is called negative correlation. Either way, using basic statistics, 
+the correlation between the output and previous variable can be quantified.
+####
+
+RNNs shortcommings and Transformers solutions
+RNN - no long range dependencies
+RNN - gradient vanishing and explosion
+RNN - Large # of training steps
+RNN - reccurence prevents parallel computation
+T - facilitate long rande dependencies
+T - no gradient vanishing and explosion
+T - fewer training steps
+T - no reccurrence that prevents parallel computation
+####
+
+How to read csv file into pandas dataframe
+import pandas as pd
+df = pd.read_csv('/gdrive/My Drive/Test/scoring.csv') 
+####
+
+Why we need to set bias to False with BatchNorm?
+Because BN has it's own bias and through normalization it removes the original bias
+It's not harmful but it's waste of processinf power
+####
+
+Difference between Standard Autoencoder and Variational AE?
+AE uses determinictic mapping vs VAE using probabilistic mapping
+AE L2 loss vs VAE has additional penalty term called Kullback_Leibler divergence
+KL goal is to regularize latent space so that it follows unit Gaussian distribution
+As a result latent space is more interpretable as it follows UGD
+AE good for reconstructing input data vs. VAE may additionally generate new data
+VAE handles noice, outliers and missing values better
+####
+
+What is Conditional Variational Autoencoder?
+It's a varient of VAE in which the model is dependent on some input 
+information, such as a text attribute or an image class label.
+CVAE are used to create brand-new data samples that are dependent on 
+particlar characteristic. They allow for more control over generated 
+data that VAE
+####
+
+What is confusion matrix
+An NxN table that summarizes the number of correct and incorrect predictions 
+that a classification model made
+Confusion matrices contain sufficient information to calculate 
+a variety of performance metrics, including precision and recall.

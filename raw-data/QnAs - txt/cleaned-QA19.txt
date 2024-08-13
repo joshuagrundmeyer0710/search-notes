@@ -1,0 +1,235 @@
+How we can deal with missing values?
+1. Check if value is not missed becaused we fail to aquire it
+2. Remove rows 
+3. Impute missing values (constant, mean, median, randomly selected from other values, estimated)
+4. Impute and marke missing value (assuming they missed for a reason)
+5. Use implementation of algorithm that accepts missing values (kNN may ignore, Naive Bayes - no problem)
+####
+
+What kind of normalization do you know?
+Z Normalization (standarization): mean at 0 std at 1
+Min-Max Normalization rescales data range to [0-1]
+Unit Vector Normalization - dividing every entry in a vector by its magnitude 
+to create a vector of length 1 known as the unit vector
+Magnitude of vector - we square each element of vector, sum them and take a root squre
+####
+
+Why normalization is important in traditional ML and in NN?
+Regression
+- improves numerical stability of the model
+- speeds up the training process
+- gives ‘equal’ considerations for each feature
+NN:
+-  Large input values saturate activation functions such as sigmoid or ReLu(negative input). 
+These types of activation functions feedback small or no gradient at all 
+in the saturated region and therefore slows down training.
+####
+
+What is a saturated neuron? 
+A neuron that predominantly outputs values close to the asymptotic 
+ends of the bounded activation function
+####
+
+What is convergence? Like loss function convergence?
+Convergence is a state during training in which loss settles 
+to within an error range around the final value
+####
+
+How to deal with small labeled dataset (Active Learning Strategy)?
+- get 10% properly labeled data
+- train a model
+- use that to predict the rest (90%) of your data
+- label 10% of the worst predictions***
+- repeat
+-------------------------------------------
+***Here are some existing methods that you can use:
+- Least Confidence Uncertainty
+- Smallest Margin Uncertainty
+- Entropy Reduction
+####
+
+How to normalize inputs in case of transfer learning?
+They should be normalized by the same mean and standard deviation
+that was used during the training of the pre-trained model
+####
+
+Pytorch how to download pretrained models and how to normalize?
+import torchvision.models as models
+resnet18 = models.resnet18(pretrained=True)
+alexnet = models.alexnet(pretrained=True)
+vgg16 = models.vgg16(pretrained=True)
+All pre-trained models expect input images normalized in the same way, i.e. mini-batches of 
+3-channel RGB images of shape (3 x H x W), where H and W are expected to be at least 224. 
+The images have to be loaded in to a range of [0, 1] and then normalized using 
+mean = [0.485, 0.456, 0.406] and std = [0.229, 0.224, 0.225]. 
+You can use the following transform to normalize:
+normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
+https://pytorch.org/vision/0.8/models.html
+####
+
+How to freeze all the parameters in the model (for example to do a transfer learning)?
+for param in model.parameters():
+  param.requires_grad = False
+####
+
+Pseudo-code to transfer learning with resnet18 and a binary classification
+from torchvision import models
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model = models.resnet18(pretrained=False).to(device) 
+for param in model.parameters():
+  param.requires_grad = False
+model.avgpool = nn.AdaptiveAvgPool2d(output_size=(1,1))
+model.fc = nn.Sequential(nn.Flatten(), nn.Linear(512,128), nn.ReLU(),
+           nn.Dropout(0.2), nn.Linear(128,1), nn.Sigmoid())
+loss = nn.BCELoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.00005)
+####
+
+Facicial key points detection - what is the key challenge on the data side?
+To represent key points as a proportion of original image
+as we are going to resize the original image. Thanks to this the location 
+of key points do not change, regardless of the size of the source image
+####
+
+What is the library with pre-trained models for 2D and 3D facial key point detection?
+face-alignment 
+https://github.com/1adrianb/face-alignment
+####
+
+What are 2 forms of derrivatives of logistic function?
+sig(x) = 1 / (1 + exp(-x))
+sig'(x) = exp(-x) / (1 + exp(-x))^2
+or
+sig'(x) = sig(x) * (1 - sig(x))
+####
+
+How to read a single row of index idx from a pandas.DataFrame
+for example to use it in __getitem__ method of Dataset class?
+def __getitem__(self, idx):
+  f = self.df.iloc[idx].squeeze()
+  atr1 = f.atr1
+  atr2 = f.atr2
+  ...
+####
+
+What mechanism to use if we want to do some transformations on a batch?
+Use collate_fn parameter of a DataLoader constructor
+def collate_fn(self, batch): # we assume it's a method of Dataset class
+  do_some_stuff
+train_loader = DataLoader(train_dataset, batch_size=32, drop_last=True, 
+               collate_fn = train_dataset.collate_fn)
+####
+
+Does Python supports multiple Inheritance?
+Python does support multiple inheritance, unlike Java. 
+Multiple inheritance means that a class can be derived 
+from more than one parent classes.
+####
+
+Define encapsulation in Python?
+Encapsulation means binding the code and the data together. 
+A Python class is an example of encapsulation.
+####
+
+How do you do data abstraction in Python?
+Data Abstraction is providing only the required details 
+and hiding the implementation from the world. 
+It can be achieved in Python by using interfaces and abstract classes.
+####
+
+Which databases are supported by Python?
+MySQL (Structured) and MongoDB (Unstructured) are the databases 
+that are supported natively in Python. 
+####
+
+Write a code to display the current time?
+currenttime= time.localtime(time.time())
+print (“Current time is”, currenttime)
+####
+
+What is transfer learning?
+A technique where we transfer model trained on a generic dataset
+to the specific dataset of interest. Typically, the pre-trained models used to 
+perform transfer learning are trainrd on millions of generic images.
+Examples:
+VGG16
+ResNet 
+EfficientNet
+####
+
+Briefly explain VGG16
+Created in Oxford in 2014
+16 stands for the # of layers in the model
+GoogleNet was winning architecture but VGG is beatifully simple yet effective
+abds with great track record
+####
+
+Briefly explain ResNet architekcture
+With too deep networks come 2 problems
+1. In forward propagation last layers have almost no information about original input
+2. In backpropagation layers near input receive hardly any gradient updates
+Residual Networks solve those problems by introducing highway-like skip connections 
+that transfer raw information to remote layers. The backward gradient will also 
+flow freely to the initial layers.
+####
+
+What are ReLU alternatives?
+Leaky ReLU f(x) = max(0.01*x, x)
+PReLU - Parametric Rectifier f(x) = max(alfa*x, x)
+alfa can be backprop and learnt
+####
+
+How to initialize with xavier?
+For each layer (conv and fc) we put init command in the __init__() method
+e.g.
+self.conv3 = nn.Conv2d(16, 16, 5)
+nn.init.xavier_uniform_(self.conv3.weight)
+self.fc1 = nn.Linear(16*24*24, 1024)
+nn.init.xavier_uniform_(self.fc1.weight)
+nn.init.zeros_(self.fc1.bias)
+####
+
+What kind of inputs and targets nn.CrossEntropyLoss expects?
+For nn.CrossEntropyLoss the target has to be a single number 
+from the interval [0, #classes] instead of a one-hot encoded target vector.
+Replace your one-hot-encoded targets:
+[1, 0] --> 0
+[0, 1] --> 1
+As for inputs it expects raw, unnormlized scores for each class
+(Probably) Equivalent of nn.LogSoftmax and nn.NLLLoss.
+####
+
+How to convers list of tensors (like list of accuracies or losses) from gpu to cpu?
+new_tensor = torch.tensor(list_of_cuda_tensors, device = 'cpu')
+####
+
+Famous CNN architectures
+1. LeNet-5   1998 LeCun (32x32x3)
+2. AlexNet   2012 Krizhevsky (227x227x3)
+3. VGGNet    2014 Simonyan & Ziesserman (224x224x3)
+4. GoogLeNet 2014 Szegedy (inception module + small # of params)
+5. ResNet    2015 He (152 layers, rapid reduction of spatial and skip connections)
+####
+
+What is unsupervised learing?
+The whole point in supervised learning is to learn function to
+map input to output, having data with labels
+With unsupervised learning we do not have labels and we learn 
+some structure of data
+examples: clustering, dimentionality reduction, feature learning
+generative models 
+####
+
+What is traditional Autoencoder?
+We some data X and we pass it through some encoder network
+to produce some latent features Z. It's a little bit like a learnable 
+principal component analysis when we take our input data and then
+convert it into some feature representation. Z ususally smaller than X (dim reduction) 
+As we do not have labels we need to invent some surogate task that we can use 
+and this task is ususally the idea of reconstruction through Decoder
+ex: imgaes -> 4-layer conv (encoder) -> 4-layer upconv (Decoder) -> images 
+Loss function: we compare input to output using e.g simple L2 Loss
+L2 often gives poor result -> use Variational Autoencoder based on Bayesian statistics
+After training we usually throw away Decoder and we may use traing encoder 
+to initialize a supervised model. Like when we have small labeled train dataset
+and a lot of unsupervised data. 

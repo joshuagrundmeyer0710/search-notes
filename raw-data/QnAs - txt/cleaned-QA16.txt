@@ -1,0 +1,93 @@
+Huber Loss 
+Less sensitive to outliers than squared error loss (SEL)
+Quadratic for small values (like SEL) and linear for larger
+It look like failed parabola
+1/2*a^2 		for |a| < P
+P*(|a| - 1/2*P)) 	otherwise
+####
+
+Mean Squared Error in pytorch
+torch.nn.MSELoss
+aka L2 Loss
+measures squarred error that can be reduced using reduction parameter (sum or mean)
+if reduction is 'none' we need to take care of reduction by ourselves e.g. by summing
+####
+
+Mean Absolute Error in pytorch
+aka L1 Loss
+measures absoulte error that can be reduced using reduction parameter (sum or mean)
+if reduction is 'none' we need to take care of reduction by ourselves e.g. by summing
+####
+
+Root Mean Squarred Error in pytorch
+Use MSELoss and square it
+criterion = nn.MSELoss()
+loss = torch.sqrt(criterion(x, y))
+####
+
+How to chech if GPU in available?
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+print(device)
+####
+
+What is nn.functional module and how to import it?
+The main difference between the nn.functional.xxx and the nn.xxx is 
+that nn.xxx has a state and nn.functional.xxx does not.
+import torch.nn.functional as F
+x = F.relu(x)
+####
+
+Explain ReLU, leaky ReLU, ELU functions
+Nonlinear activation functions (usually sigmoids) are preferred as they allow the nodes to learn 
+more complex structures in the data. But sigmoids have limited sensitivity (around midpoint)
+and saturate fast (going quickly to 1 and 0 or -1). Also suseptible to vanishing gradient problem.
+Rectified linear activation unit: g(z) = max{0, z} is nearly linear, it preserves many of the 
+properties that make linear models easy to optimize with gradient-based methods. 
+They also preserve many of the properties that make linear models generalize well.
+Leaky ReLU, is like ReLU, but it has a small slope for negative values instead of a flat slope
+Unlike to ReLU, ELU can produce negative outputs.
+####
+
+What is vanishing gradient problem?
+Layers deep in large networks using these nonlinear activation functions fail to receive 
+useful gradient information. Error is back propagated through the network and used 
+to update the weights. The amount of error decreases dramatically with each additional 
+layer through which it is propagated, given the derivative of the chosen activation function. 
+This is called the vanishing gradient problem and prevents deep 
+(multi-layered) networks from learning effectively.
+Vanishing gradients make it difficult to know which direction 
+the parameters should move to improve the cost function
+####
+
+How to rearange dimentions in a tensor
+Using permute function:
+pic = torch.rand(3,32,32)
+pic = pic.permute(1,2,0)
+plt.imshow(pic)
+####
+
+How to split Dataset into train and validation datasets?
+from torch.utils.data import random_split
+train_dataset, validation_dataset = random_split(train_and_val_dataset, [train_size, validation_size])
+####
+
+model.train() vs model.eval() vs torch.no_grad()
+How to use them?
+The first 2 set layers such as BatchNorm2d or Dropout2d from training to inference mode (wnioskowanie).
+torch.no_grad() impacts the autograd engine and deactivate it.
+for epoch in range(epochs):
+  model.train()
+    for batch in train_loader:
+      # some code
+
+   # Validation
+   model.eval()
+   with torch.no_grad():
+     for batch in val_loader:
+       #some code
+
+# Testing / inference
+model.eval()
+with torch.no_grad():
+   for batch in test_loader:
+       #some code/ inference
