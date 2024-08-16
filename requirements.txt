@@ -3,3 +3,4 @@ langchain_openai
 python-dotenv
 azure-search-documents
 azure-identity
+langchain-ollama
