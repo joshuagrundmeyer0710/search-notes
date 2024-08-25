@@ -16,9 +16,6 @@ from azure.search.documents.indexes.models import (
     SearchFieldDataType,
     SimpleField,
 )
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.schema import Document
-import re
 import os
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.vectorstores.azuresearch import AzureSearch
@@ -31,6 +28,12 @@ _ = load_dotenv(find_dotenv(filename='.env'))
 openai_api_key = os.getenv("OPENAI_API_KEY")
 openai_api_version = "2023-05-15"
 model = "text-embedding-ada-002"
+
+# Ask a user if they want to create the index
+create_index = input("Do you want to create the index? (y/n): ")
+if create_index.lower() != "y":
+    print("Index creation aborted.")
+    exit()
 
 # Initialize the embeddings
 embeddings = OpenAIEmbeddings(
