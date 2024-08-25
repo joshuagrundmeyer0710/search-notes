@@ -5,3 +5,4 @@ azure-search-documents
 azure-identity
 langchain-ollama
 langgraph
+beautifulsoup4
