@@ -1,4 +1,15 @@
-import glob
+"""
+Filename: notes_to_text.py
+
+Author: Szymon Manduk
+
+Company: Szymon Manduk AI, manduk.ai
+
+Description: This script reads Google Notes exported as HTMLs and extracts the title, content, and label of each note. The extracted information is then saved to a text file.
+
+Copyright (c) 2024 Szymon Manduk AI.
+"""
+
 import glob
 from bs4 import BeautifulSoup
 
@@ -29,7 +40,7 @@ for file in html_files:
             v_label = label.text if label else ''
             
             # append information to a file
-            with open(directory + '/output.txt', 'a', encoding='utf-8') as output_file:
+            with open(directory + '/joined_notes.txt', 'a', encoding='utf-8') as output_file:
                 output_file.write(f'Title: {v_title}\n')
                 output_file.write(f'Content: {v_content}\n')
-                output_file.write(f'Label: {v_label}\n')
+                output_file.write(f'Label: {v_label}\n####\n\n')
