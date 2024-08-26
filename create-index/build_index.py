@@ -12,7 +12,7 @@ Copyright (c) 2024 Szymon Manduk AI.
 
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.schema import Document
-import re
+import json
 import os
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.vectorstores.azuresearch import AzureSearch
@@ -20,6 +20,8 @@ from langchain_openai import OpenAIEmbeddings
 
 # Load the environment variables
 _ = load_dotenv(find_dotenv(filename='.env'))
+
+directory = 'raw-data/Notes/json'
 
 # OpenAI API data (for embeddings)
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -50,37 +52,26 @@ vector_store = AzureSearch(
     embedding_function=embedding_function,
 )
 
-# Function to parse the text file
-def parse_text_file(file_content):
-    entries = re.split(r'\n####\n', file_content)
-    documents = []
-    for entry in entries:
-        if entry.strip():
-            lines = entry.strip().split('\n')
-            title = content = label = ""
-            for line in lines:
-                if line.startswith("Title:"):
-                    title = line.replace("Title:", "").strip()
-                elif line.startswith("Content:"):
-                    content = line.replace("Content:", "").strip()
-                elif line.startswith("Label:"):
-                    label = line.replace("Label:", "").strip()
-            documents.append(Document(page_content=content, metadata={"title": title, "label": label}))
-    return documents
+# for each json file in the directory we append the content to the documents list
+documents = []
+for file in os.listdir(directory):
+    # if the file is not a json file we skip it
+    if not file.endswith(".json"):
+        continue
 
-# Load and parse the text file
-with open("raw-data/Notes/joined_notes.txt", "r", encoding="utf-8") as file:
-    file_content = file.read()
-documents = parse_text_file(file_content)
+    # Load and parse the json file
+    with open(directory + "/" + file, "r", encoding="utf-8") as file:
+        data = json.load(file)
+        documents.append(Document(page_content=data["content"], metadata={"title": data["title"], "label": data["label"]}))
 
 print(f"Read {len(documents)} documents from the file.")
+
 # Sort the documents by length in ascending order
 sorted_documents = sorted(documents, key=lambda doc: len(doc.page_content))
 
-# Print the 10 shortest documents
-for i in range(200):
-    print(f"Document {i+1} (length {len(sorted_documents[i].page_content)}): {sorted_documents[i].page_content}")
-
+# Print few shortest documents
+for i in range(5):
+    print(f"Document {i+1} (length {len(sorted_documents[i].page_content)}): {sorted_documents[i].page_content} - {sorted_documents[i].metadata}")
 
 # Create text splitter
 text_splitter = CharacterTextSplitter(chunk_size=1, chunk_overlap=0)
@@ -90,11 +81,11 @@ split_docs = text_splitter.split_documents(documents)
 
 print(f"Split the documents into {len(split_docs)} chunks.")
 
-# # Ask a user if they want to build the index
-# create_index = input("Do you want to build the index? (y/n): ")
-# if create_index.lower() != "y":
-#     print("Index build aborted.")
-#     exit()
+# Ask a user if they want to build the index
+create_index = input("Do you want to build the index? (y/n): ")
+if create_index.lower() != "y":
+    print("Index build aborted.")
+    exit()
 
-# # Add documents to the vector store
-# vector_store.add_documents(documents=split_docs)
+# Add documents to the vector store
+vector_store.add_documents(documents=split_docs)
