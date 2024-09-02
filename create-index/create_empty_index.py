@@ -10,16 +10,11 @@ Description: This file contains the code to create an empty custom index in Azur
 Copyright (c) 2024 Szymon Manduk AI.
 """
 
-from azure.search.documents.indexes.models import (
-    SearchableField,
-    SearchField,
-    SearchFieldDataType,
-    SimpleField,
-)
 import os
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.vectorstores.azuresearch import AzureSearch
 from langchain_openai import OpenAIEmbeddings
+from index_fields import fields
 
 # Load the environment variables
 _ = load_dotenv(find_dotenv(filename='.env'))
@@ -46,52 +41,7 @@ embedding_function = embeddings.embed_query
 # Azure AI Search data (for vector store)
 vector_store_address = os.getenv("AZURESEARCH_ENDPOINT") 
 vector_store_password = os.getenv("AZURESEARCH_ADMIN_KEY")
-# The name of the index will be stored in the environment variables, but for now, we will hardcode it here
-print("Change where the index name is stored in the code to use the environment variable")
-# vector_store_index = os.getenv("AZURESEARCH_INDEX_NAME")
-vector_store_index = "google-notes-index"
-
-# Define the index schema
-fields = [
-    SimpleField(
-        name="chunk_id",  # This is the mandatory field
-        type=SearchFieldDataType.String,
-        key=True,
-        filterable=True,
-    ),
-    SearchableField(
-        name="chunk",  # This is the mandatory field
-        type=SearchFieldDataType.String,
-        searchable=True,
-    ),
-    SearchField(
-        name="text_vector",  # This is the mandatory field
-        type=SearchFieldDataType.Collection(SearchFieldDataType.Single),
-        searchable=True,
-        vector_search_dimensions=len(embedding_function("Text")),
-        vector_search_profile_name="myHnswProfile",
-    ),
-    SearchableField(
-        name="content",
-        type=SearchFieldDataType.String,
-        searchable=True,
-    ),
-    SearchableField(
-        name="metadata",
-        type=SearchFieldDataType.String,
-        searchable=True,
-    ),
-    SearchableField(
-        name="title",
-        type=SearchFieldDataType.String,
-        searchable=True,
-    ),
-    SimpleField(
-        name="label",
-        type=SearchFieldDataType.String,
-        filterable=True,
-    ),
-]
+vector_store_index = os.getenv("AZURESEARCH_INDEX_NAME")
 
 vector_store = AzureSearch(
     azure_search_endpoint=vector_store_address,
@@ -100,3 +50,5 @@ vector_store = AzureSearch(
     embedding_function=embedding_function,
     fields=fields,
 )
+
+print("Index created successfully.")
