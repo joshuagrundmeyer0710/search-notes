@@ -20,6 +20,8 @@ The project uses LangGraph to build and run a workflow that:
 - Integration with various AI and search APIs
 - Intelligent query processing workflow
 
+![Workflow graph](data/image.png)
+
 ## Technology Stack
 
 - **Programming Language**: Python
