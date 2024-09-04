@@ -17,8 +17,8 @@ from bs4 import BeautifulSoup
 import os
 
 # Directory containing the HTML files
-input_directory = 'raw-data/Notes'
-output_directory = 'raw-data/Notes/txt'
+input_directory = 'data/Notes'
+output_directory = 'data/Notes/txt'
 encoding = 'utf-8'
 length_threshold = 100  # Minimum number of characters in the content of a note
 

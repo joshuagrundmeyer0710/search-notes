@@ -23,7 +23,7 @@ from index_fields import fields
 # Load the environment variables
 _ = load_dotenv(find_dotenv(filename='.env'))
 
-directory = 'raw-data/Notes/json'
+directory = 'data/Notes/json'
 
 # OpenAI API data (for embeddings)
 openai_api_key = os.getenv("OPENAI_API_KEY")
