@@ -5,7 +5,7 @@ Author: Szymon Manduk
 
 Company: Szymon Manduk AI, manduk.ai
 
-Description: 
+Description: This script reads documents from a directory, splits them into chunks, and adds them to the Azure Search index.
 
 Copyright (c) 2024 Szymon Manduk AI.
 """
