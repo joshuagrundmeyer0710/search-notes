@@ -30,7 +30,7 @@ The project uses LangGraph to build and run a workflow that:
 - **Search Engine**: Azure AI Search
 - **Web Search API**: Tavily Search API or Azure Bing Search API
 - **Models**: 
-  - GPT-4-turbo (OpenAI or Azure OpenAI)
+  - GPT-4o-mini (OpenAI or Azure OpenAI)
   - Llama 3.1 8B (locally through Ollama)
 - **Cloud Platform**: Azure
 
