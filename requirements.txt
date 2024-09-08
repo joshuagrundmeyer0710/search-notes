@@ -6,3 +6,6 @@ azure-identity
 langchain-ollama
 langgraph
 beautifulsoup4
+streamlit
+fastapi
+uvicorn
