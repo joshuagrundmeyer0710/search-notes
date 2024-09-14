@@ -1,5 +1,7 @@
 # Google Keep Notes Search Engine
 
+Note: project still under active development.
+
 This project implements a simple search engine for Google Keep notes using Azure AI Search and various AI technologies. It combines vector search with semantic search (hybrid mode) to provide high-quality search results and uses LangGraph to create an intelligent workflow for answering queries.
 
 ## Project Overview
@@ -31,7 +33,7 @@ The project uses LangGraph to build and run a workflow that:
 - **Web Search API**: Tavily Search API or Azure Bing Search API
 - **Models**: 
   - GPT-4o-mini (OpenAI or Azure OpenAI)
-  - Llama 3.1 8B (locally through Ollama)
+  - Llama 3.1 8B (through Ollama - for local deployment only)
 - **Cloud Platform**: Azure
 
 ## Deployment
@@ -61,7 +63,10 @@ The following environment variables need to be set in .env file:
 - Create a new Azure Search index using create_empty_index.py script.
 - Build index using build_index.py script.
 
-4. 
+4. Build search notes API
+- search_notes.py script provides an API for searching notes.
+- it can be build using Dockerfile and run as a container.
+- it can be deployed on Azure cloud as a web app by:
 
 ## License
 
