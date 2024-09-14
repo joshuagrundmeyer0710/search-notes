@@ -1,3 +1,9 @@
+# This is main requirements file for the project. It outlines general packages required for the project.
+# Please note there are two other requirements files in the project.
+# One in the search-index directory and another in the streamlit-app directory.
+# Both are used to install specific versions of the packages required for those components,
+# as docker build images with different versions of the same package and this can cause issues.
+# While regenerating the requirements files using docker,please remove pywin32 from the requirements fil, as it is not supported in linux.
 langchain-community
 langchain_openai
 python-dotenv
@@ -9,3 +15,4 @@ beautifulsoup4
 streamlit
 fastapi
 uvicorn
+gunicorn
