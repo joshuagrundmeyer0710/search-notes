@@ -16,9 +16,11 @@ Description: Main script for the search engine. It defines:
 
 it can be run in two modes:
 - test-mode: to test the graph - this will print the answer and steps for a few hardcoded questions: python search-index\search_notes.py --mode test-mode
-- api-mode: to start the FastAPI server that serves the API for answering questions. The API can be accessed locally at on http://127.0.0.1:8000 by default or on the Azure App Service URL. 
-    The example command for Azure: az webapp up --name your-api-name --resource-group your-resource-group --runtime "PYTHON:3.9" --sku F1 # or B1
-    The example command for local execution: python search-index\search_notes.py --mode api-mode
+- api-mode: to start the FastAPI server that serves the API for answering questions. The API can be accessed locally at on http://localhost:8000 
+    The example command for local execution: 
+    python search-index\search_notes.py --mode api-mode-local (uses Uvicorn)
+    or
+    python search-index\search_notes.py --mode api-mode-azure (uses Gunicorn)
 
 Copyright (c) 2024 Szymon Manduk AI.
 """
@@ -77,22 +79,11 @@ graph_ops = GraphOperations(retriever, main_chain, eval_chain, web_search_tool)
 # Build the graph
 search_graph = build_graph(graph_ops)
 
-#### Define fastAPI App (used in both local and Azure) ####
-app = FastAPI()
-
-class Question(BaseModel):
-    question: str
-
-@app.post("/answer")
-async def get_answer(question: Question):
-    result = search_graph.invoke({"question": question.question})
-    return {"answer": result['answer']}
-
-#### Command-line argument parsing for local execution ####
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the script in different modes")
-    parser.add_argument('--mode', type=str, required=True, choices=['test-mode', 'api-mode'], help="Mode of operation: 'test-mode' or 'api-mode'")
+    parser.add_argument('--mode', type=str, required=True, choices=['test-mode', 'api-mode-local', 'api-mode-azure'], help="Mode of operation: 'test-mode', 'api-mode-local' or 'api-mode-azure'")
     args = parser.parse_args()
+    print(f"Arguments parsed - mode: {args.mode}")
 
     if args.mode == 'test-mode':
         #### Testing the graph ####
@@ -112,7 +103,51 @@ if __name__ == "__main__":
             print(result['answer'])
             print(result['steps'])
 
-    elif args.mode == 'api-mode':
-        #### Local API Mode: Start FastAPI server via Uvicorn ####
-        import uvicorn
-        uvicorn.run(app, host="0.0.0.0", port=8000)
+    else:
+        #### Define fastAPI App (used in both local and Azure) ####
+        app = FastAPI()
+
+        class Question(BaseModel):
+            question: str
+
+        @app.post("/answer")
+        async def get_answer(question: Question):
+            result = search_graph.invoke({"question": question.question})
+            return {"answer": result['answer'], "steps": result['steps']}
+        
+        print("FastAPI app created")
+
+        if args.mode == 'api-mode-local':
+            print("Starting FastAPI server via Uvicorn")
+            #### Local API Mode: Start FastAPI server via Uvicorn ####
+            import uvicorn
+            uvicorn.run(app, host="0.0.0.0", port=8000)
+        elif args.mode == 'api-mode-azure':
+            print("Starting FastAPI server via gunicorn")
+            #### Azure API Mode: Start FastAPI server via gunicorn ####
+                        #### Azure API Mode: Start FastAPI server via gunicorn ####
+            from gunicorn.app.base import BaseApplication
+
+            class StandaloneApplication(BaseApplication):
+                def __init__(self, app, options=None):
+                    self.options = options or {}
+                    self.application = app
+                    super().__init__()
+
+                def load_config(self):
+                    config = {key: value for key, value in self.options.items()
+                              if key in self.cfg.settings and value is not None}
+                    for key, value in config.items():
+                        self.cfg.set(key.lower(), value)
+
+                def load(self):
+                    return self.application
+
+            options = {
+                'bind': '0.0.0.0:8000',
+                'workers': 4,
+                'worker_class': 'uvicorn.workers.UvicornWorker'
+            }
+            StandaloneApplication(app, options).run()
+        else:
+            raise ValueError("Invalid mode. Please choose 'test-mode' or 'api-mode-local' or 'api-mode-azure'")
